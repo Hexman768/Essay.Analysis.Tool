@@ -682,6 +682,7 @@ namespace NotepadSharp
             this.Name = "MainForm";
             this.Text = "Notepad#";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FontChanged += new System.EventHandler(this.MainForm_FontChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseClick);
             this.menuStrip1.ResumeLayout(false);

@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using NotepadSharp.Core;
 
 namespace NotepadSharp
 {
@@ -25,23 +26,15 @@ namespace NotepadSharp
         internal LoggerForm logger;
         internal DocMap documentMap;
 
-        //Line Colors
-        internal Color currentLineColor = Color.FromArgb(100, 210, 210, 255);
-        internal Color changedLineColor = Color.FromArgb(255, 230, 230, 255);
-
         //General variable declarations and definitions
         private readonly Range _selection;
-        private bool _highlightCurrentLine = true;
-        private bool _enableDocumentMap = true;
-        private Font font = new Font("Consolas", 9.75f);
+
+        private GlobalSettings _settings;
 
         /// <summary>
         /// Defines the Platform Type.
         /// </summary>
         protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
-
-        //Styles
-        private Style sameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
 
         /// <summary>
         /// Gets the Current instance of <see cref="Editor"/>
@@ -107,6 +100,9 @@ namespace NotepadSharp
             IsMdiContainer = true;
 
             logger.Log("Form Initialized!", LoggerMessageType.Info);
+
+            // Set default settings
+            _settings = new GlobalSettings();
             
             CreateTab(null);
             UpdateDocumentMap();
@@ -121,14 +117,14 @@ namespace NotepadSharp
         private void CreateTab(string fileName)
         {
             var tab = new Editor(this);
-            tab.mainEditor.Font = font;
+            tab.mainEditor.Font = _settings.EditorFont;
             tab.mainEditor.Dock = DockStyle.Fill;
             tab.mainEditor.BorderStyle = BorderStyle.Fixed3D;
             tab.mainEditor.LeftPadding = 17;
             tab.mainEditor.HighlightingRangeType = HighlightingRangeType.VisibleRange;
             tab.Tag = fileName;
 
-            tab.mainEditor.AddStyle(sameWordsStyle);
+            tab.mainEditor.AddStyle(_settings.SameWordsStyle);
 
             if (fileName != null && !IsFileAlreadyOpen(fileName))
             {
@@ -143,7 +139,7 @@ namespace NotepadSharp
             tab.Title = fileName != null ? Path.GetFileName(fileName) : "new " + tablist.Count;
 
             tab.mainEditor.Focus();
-            tab.mainEditor.ChangedLineColor = changedLineColor;
+            tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
@@ -186,9 +182,9 @@ namespace NotepadSharp
         {
             foreach (Editor tab in tablist.ToArray())
             {
-                if (_highlightCurrentLine)
+                if (_settings.HighlightCurrentLine)
                 {
-                    tab.mainEditor.CurrentLineColor = currentLineColor;
+                    tab.mainEditor.CurrentLineColor = _settings.CurrentLineColor;
                 }
                 else
                 {
@@ -206,10 +202,10 @@ namespace NotepadSharp
             if (font.Size <= 4)
                 return;
 
-            this.font = font;
+            _settings.EditorFont = font;
             foreach (Editor tab in tablist)
             {
-                tab.mainEditor.Font = font;
+                tab.mainEditor.Font = _settings.EditorFont;
             }
         }
 
@@ -286,12 +282,12 @@ namespace NotepadSharp
             if (fontDialog == null)
             {
                 fontDialog = new FontDialog();
-                fontDialog.Font = font;
+                fontDialog.Font = _settings.EditorFont;
             }
             if (CurrentTB != null && fontDialog.ShowDialog() == DialogResult.OK)
             {
                 ChangeFont(fontDialog.Font);
-                font = fontDialog.Font;
+                _settings.EditorFont = fontDialog.Font;
             }
         }
 
@@ -350,12 +346,12 @@ namespace NotepadSharp
 
         private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(font.Name, font.Size + 2));
+            ChangeFont(new Font(_settings.EditorFont.Name, _settings.EditorFont.Size + 2));
         }
 
         private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(font.Name, font.Size - 2));
+            ChangeFont(new Font(_settings.EditorFont.Name, _settings.EditorFont.Size - 2));
         }
 
         private void FindToolStripButton_Click(object sender, EventArgs e)
@@ -368,7 +364,7 @@ namespace NotepadSharp
 
         private void DocumentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _enableDocumentMap = !_enableDocumentMap;
+            _settings.ShowDocumentMap = !_settings.ShowDocumentMap;
             UpdateDocumentMap();
         }
 
@@ -487,7 +483,7 @@ namespace NotepadSharp
 
         private void HlCurrentLineToolStripButton_Click(object sender, EventArgs e)
         {
-            _highlightCurrentLine = _highlightCurrentLine ? false : true;
+            _settings.HighlightCurrentLine = _settings.HighlightCurrentLine ? false : true;
 
             HighlightCurrentLine();
         }
@@ -743,14 +739,14 @@ namespace NotepadSharp
 
         private void UpdateDocumentMap()
         {
-            if (documentMap == null && _enableDocumentMap)
+            if (documentMap == null && _settings.ShowDocumentMap)
                 BuildDocumentMap();
 
             if (CurrentTB != null && documentMap != null)
             {
                 documentMap.Target = tablist.Count > 0 ? CurrentTB.mainEditor : null;
-                documentMap.Visible = _enableDocumentMap;
-                if (!_enableDocumentMap || documentMap.Target == null)
+                documentMap.Visible = _settings.ShowDocumentMap;
+                if (!_settings.ShowDocumentMap || documentMap.Target == null)
                 {
                     documentMap.Close();
                     documentMap = null;
@@ -931,5 +927,10 @@ namespace NotepadSharp
         }
 
         #endregion
+
+        private void MainForm_FontChanged(object sender, EventArgs e)
+        {
+            _settings.EditorFont = CurrentTB.Font;
+        }
     }
 }

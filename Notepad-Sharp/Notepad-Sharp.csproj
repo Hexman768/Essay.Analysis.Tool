@@ -76,6 +76,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\GlobalSettings.cs" />
     <Compile Include="DiffViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
