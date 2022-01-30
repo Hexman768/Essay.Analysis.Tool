@@ -146,6 +146,9 @@ namespace NotepadSharp
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
+            tab.mainEditor.ForeColor = _settings.ForeColor;
+            tab.mainEditor.BackColor = _settings.BackColor;
+            tab.mainEditor.CaretBlinking = _settings.CaretBlinking;
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
             UpdateDocumentMap();

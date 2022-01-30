@@ -1,34 +1,86 @@
 ﻿using FastColoredTextBoxNS;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace NotepadSharp.Core
 {
+    /// <summary>
+    /// Class to hold global settings.
+    /// </summary>
     public class GlobalSettings
     {
+        /// <summary>
+        /// Constructs the <see cref="GlobalSettings"/> Instance.
+        /// </summary>
         public GlobalSettings()
         {
             RestoreDefaults();
         }
 
+        /// <summary>
+        /// Attribute to enable or disable the
+        /// viewing of the <see cref="DocumentMap"/>.
+        /// </summary>
         public bool ShowDocumentMap { get; set; }
 
+        /// <summary>
+        /// Enables or disables the current line
+        /// highlighting functionality of the <see cref="FastColoredTextBox"/>.
+        /// </summary>
         public bool HighlightCurrentLine { get; set; }
 
+        /// <summary>
+        /// Sets the color of the current line.
+        /// </summary>
         public Color CurrentLineColor { get; set; }
 
+        /// <summary>
+        /// Gets and sets the color of the changed line.
+        /// </summary>
         public Color ChangedLineColor { get; set; }
 
+        /// <summary>
+        /// Gets and sets the style of the SameWords attribute.
+        /// </summary>
         public Style SameWordsStyle { get; set; }
 
+        /// <summary>
+        /// Gets and sets the Font for the <see cref="FastColoredTextBox"/>.
+        /// </summary>
         public Font EditorFont { get; set; }
 
+        /// <summary>
+        /// Gets and sets the color of the line numbers in the editor.
+        /// </summary>
         public Color LineNumberColor { get; set; } // default is color.teal
 
+        /// <summary>
+        /// Gets and sets the color of the caret in the editor.
+        /// </summary>
         public Color CaretColor { get; set; } // default is black
 
+        /// <summary>
+        /// Enables or disables the caret being wide or slim.
+        /// </summary>
         public bool WideCaret { get; set; }
 
+        /// <summary>
+        /// Gets and sets the text color of the editor.
+        /// </summary>
+        public Color ForeColor { get; set; }
+
+        /// <summary>
+        /// Gets and sets the background color of the editor.
+        /// </summary>
+        public Color BackColor { get; set; }
+
+        /// <summary>
+        /// Enables and disables the cursor blinking in the editor.
+        /// </summary>
+        public bool CaretBlinking { get; set; }
+
+        /// <summary>
+        /// Restores settings to the default values.
+        /// </summary>
         public void RestoreDefaults()
         {
             ShowDocumentMap = true;
@@ -40,6 +92,9 @@ namespace NotepadSharp.Core
             LineNumberColor = Color.Teal;
             CaretColor = Color.Blue;
             WideCaret = false;
+            ForeColor = Color.FromArgb(255, 0, 0, 0);
+            BackColor = Color.White;
+            CaretBlinking = true;
         }
     }
 }
