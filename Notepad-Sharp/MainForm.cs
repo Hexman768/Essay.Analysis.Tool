@@ -140,6 +140,9 @@ namespace NotepadSharp
 
             tab.mainEditor.Focus();
             tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
+            tab.mainEditor.LineNumberColor = _settings.LineNumberColor;
+            tab.mainEditor.CaretColor = _settings.CaretColor;
+            tab.mainEditor.WideCaret = _settings.WideCaret;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);

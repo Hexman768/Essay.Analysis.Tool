@@ -1,10 +1,6 @@
 ﻿using FastColoredTextBoxNS;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NotepadSharp.Core
 {
@@ -27,6 +23,12 @@ namespace NotepadSharp.Core
 
         public Font EditorFont { get; set; }
 
+        public Color LineNumberColor { get; set; } // default is color.teal
+
+        public Color CaretColor { get; set; } // default is black
+
+        public bool WideCaret { get; set; }
+
         public void RestoreDefaults()
         {
             ShowDocumentMap = true;
@@ -35,6 +37,9 @@ namespace NotepadSharp.Core
             ChangedLineColor = Color.FromArgb(255, 230, 230, 255);
             SameWordsStyle = new MarkerStyle(new SolidBrush(Color.FromArgb(50, Color.Gray)));
             EditorFont = new Font("Consolas", 9.75f);
+            LineNumberColor = Color.Teal;
+            CaretColor = Color.Blue;
+            WideCaret = false;
         }
     }
 }
