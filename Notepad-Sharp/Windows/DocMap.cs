@@ -5,18 +5,11 @@ namespace NotepadSharp.Windows
 {
     public partial class DocMap : DockContent
     {
-        /// <summary>
-        /// Returns the Target of the DocumentMap.
-        /// </summary>
-        public FastColoredTextBox Target
+        public DocumentMap map
         {
             get
             {
-                return documentMap1.Target;
-            }
-            set
-            {
-                documentMap1.Target = value;
+                return documentMap1;
             }
         }
 

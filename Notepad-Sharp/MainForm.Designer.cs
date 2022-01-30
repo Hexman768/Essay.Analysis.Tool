@@ -116,6 +116,7 @@ namespace NotepadSharp
             this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tsMain.SuspendLayout();
@@ -277,8 +278,9 @@ namespace NotepadSharp
             this.statusBarToolStripMenuItem,
             this.syntaxHighlightingToolStripMenuItem,
             this.documentMapToolStripMenuItem,
+            this.loggerToolStripMenuItem,
             this.diffToolStripMenuItem,
-            this.themeToolStripMenuItem});
+            this.settingsToolStripMenuItem});
             this.documentMapToolStripItem.Name = "documentMapToolStripItem";
             this.documentMapToolStripItem.Size = new System.Drawing.Size(55, 24);
             this.documentMapToolStripItem.Text = "View";
@@ -289,7 +291,7 @@ namespace NotepadSharp
             this.statusBarToolStripMenuItem.CheckOnClick = true;
             this.statusBarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.statusBarToolStripMenuItem.Name = "statusBarToolStripMenuItem";
-            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.statusBarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.statusBarToolStripMenuItem.Text = "Status Bar";
             this.statusBarToolStripMenuItem.Click += new System.EventHandler(this.StatusBarToolStripMenuItem_Click);
             // 
@@ -309,7 +311,7 @@ namespace NotepadSharp
             this.batchToolStripMenuItem,
             this.assemblyToolStripMenuItem});
             this.syntaxHighlightingToolStripMenuItem.Name = "syntaxHighlightingToolStripMenuItem";
-            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.syntaxHighlightingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.syntaxHighlightingToolStripMenuItem.Text = "Syntax Highlighting";
             // 
             // noneToolStripMenuItem
@@ -399,14 +401,21 @@ namespace NotepadSharp
             // documentMapToolStripMenuItem
             // 
             this.documentMapToolStripMenuItem.Name = "documentMapToolStripMenuItem";
-            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.documentMapToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.documentMapToolStripMenuItem.Text = "Document Map";
             this.documentMapToolStripMenuItem.Click += new System.EventHandler(this.DocumentMapToolStripMenuItem_Click);
+            // 
+            // loggerToolStripMenuItem
+            // 
+            this.loggerToolStripMenuItem.Name = "loggerToolStripMenuItem";
+            this.loggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loggerToolStripMenuItem.Text = "Logger";
+            this.loggerToolStripMenuItem.Click += new System.EventHandler(this.LoggerToolStripMenuItem_Click);
             // 
             // diffToolStripMenuItem
             // 
             this.diffToolStripMenuItem.Name = "diffToolStripMenuItem";
-            this.diffToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.diffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.diffToolStripMenuItem.Text = "Diff";
             this.diffToolStripMenuItem.Click += new System.EventHandler(this.DiffToolStripMenuItem_Click);
             // 
@@ -801,6 +810,13 @@ namespace NotepadSharp
             this.selectAllToolStripMenuItem.Text = "&Select All";
             this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.SelectAllToolStripMenuItem_Click);
             // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -816,6 +832,7 @@ namespace NotepadSharp
             this.Name = "MainForm";
             this.Text = "Notepad#";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FontChanged += new System.EventHandler(this.MainForm_FontChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseClick);
             this.menuStrip1.ResumeLayout(false);
@@ -891,21 +908,7 @@ namespace NotepadSharp
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem jSONToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem batchToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem defaultToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem legacyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem retroToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2012LightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2013BLueToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2013DarkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2013LightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2015BLueToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2015DarkToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2015LightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vS2003ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem assemblyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

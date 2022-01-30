@@ -9,6 +9,16 @@ namespace NotepadSharp.Windows
 {
     public partial class Editor : DockContent
     {
+        //file extensions
+        private const string _html = ".html";
+        private const string _xml = ".xml";
+        private const string _javascript = ".js";
+        private const string _csharp = ".cs";
+        private const string _lua = ".lua";
+        private const string _sql = ".sql";
+        private const string _vb = ".vb";
+        private const string _vbs = ".vbs";
+
         private MainForm _parent;
         private string _syntaxLabelText;
         private bool _isUntitled;
@@ -108,6 +118,11 @@ namespace NotepadSharp.Windows
             DetectSyntax(Path.GetExtension((string)Tag));
 
             return true;
+        }
+
+        public void SetCurrentEditorSyntaxHighlight(string fName)
+        {
+            DetectSyntax(Path.GetExtension(fName));
         }
 
         /// <summary>

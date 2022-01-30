@@ -9,7 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using NotepadSharp.Core.Services;
+using NotepadSharp.Core;
 
 namespace NotepadSharp
 {
@@ -24,13 +24,17 @@ namespace NotepadSharp
         internal OpenFileDialog file_open;
         internal FontDialog fontDialog;
         internal DocMap documentMap;
-        List<string> closedFileNames;
+        internal SettingsForm settingsForm;
 
         //General variable declarations and definitions
         private readonly Range _selection;
-        private bool _highlightCurrentLine = true;
-        private bool _enableDocumentMap = true;
-        List<Editor> tablist = new List<Editor>();
+
+        private GlobalSettings _settings;
+
+        /// <summary>
+        /// Defines the Platform Type.
+        /// </summary>
+        protected static readonly Platform platformType = PlatformType.GetOperationSystemPlatform();
 
         /// <summary>
         /// Gets the Current instance of <see cref="Editor"/>
@@ -40,6 +44,14 @@ namespace NotepadSharp
             get
             {
                 return this.dockpanel.ActiveContent as Editor;
+            }
+        }
+
+        public GlobalSettings GlobalSettingsVar
+        {
+            get
+            {
+                return _settings;
             }
         }
 
@@ -108,8 +120,12 @@ namespace NotepadSharp
             
             IsMdiContainer = true;
 
-            LoggingService.Info("MainForm Initialized");
-            
+            logger.Log("Form Initialized!", LoggerMessageType.Info);
+
+            // Set default settings
+            _settings = new GlobalSettings();
+            settingsForm = new SettingsForm(this);
+
             CreateTab(null);
             UpdateDocumentMap();
 
@@ -122,7 +138,22 @@ namespace NotepadSharp
 
         void CreateTab(string fileName)
         {
-            if (IsFileAlreadyOpen(fileName))
+            var tab = new Editor(this);
+            tab.mainEditor.Font = _settings.EditorFont;
+            tab.mainEditor.Dock = DockStyle.Fill;
+            tab.mainEditor.BorderStyle = BorderStyle.Fixed3D;
+            tab.mainEditor.LeftPadding = 17;
+            tab.mainEditor.HighlightingRangeType = HighlightingRangeType.VisibleRange;
+            tab.Tag = fileName;
+
+            tab.mainEditor.AddStyle(_settings.SameWordsStyle);
+
+            if (fileName != null && !IsFileAlreadyOpen(fileName))
+            {
+                tab.SetCurrentEditorSyntaxHighlight(fileName);
+                tab.mainEditor.OpenFile(fileName);
+            }
+            else if (fileName != null)
             {
                 return;
             }
@@ -142,9 +173,19 @@ namespace NotepadSharp
                 tab.mainEditor.OpenFile(fileName);
             }
 
+            tab.mainEditor.Focus();
+            tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
+            tab.mainEditor.LineNumberColor = _settings.LineNumberColor;
+            tab.mainEditor.CaretColor = _settings.CaretColor;
+            tab.mainEditor.WideCaret = _settings.WideCaret;
             tab.mainEditor.KeyDown += new KeyEventHandler(MainForm_KeyDown);
             tab.mainEditor.TextChangedDelayed += new EventHandler<TextChangedEventArgs>(Tb_TextChangedDelayed);
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
+            tab.mainEditor.ForeColor = _settings.ForeColor;
+            tab.mainEditor.BackColor = _settings.BackColor;
+            tab.mainEditor.CaretColor = _settings.CaretColor;
+            tab.mainEditor.CaretBlinking = _settings.CaretBlinking;
+            tab.mainEditor.SelectionColor = _settings.SelectionColor;
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
             tab.Focus();
@@ -152,7 +193,39 @@ namespace NotepadSharp
             HighlightCurrentLine();
         }
 
-        int NextUntitledNumber()
+        /// <summary>
+        /// Updates the pre-existing tabs in the tablist
+        /// with the latest settings from <see cref="GlobalSettings"/>.
+        /// </summary>
+        public void UpdateActiveTabs()
+        {
+            foreach (Editor tab in tablist)
+            {
+                // Set editor settings
+                tab.mainEditor.BackColor = _settings.BackColor;
+                tab.mainEditor.ForeColor = _settings.ForeColor;
+                tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
+                tab.mainEditor.CurrentLineColor = _settings.CurrentLineColor;
+                tab.mainEditor.LineNumberColor = _settings.LineNumberColor;
+                tab.mainEditor.CaretColor = _settings.CaretColor;
+                tab.mainEditor.SelectionColor = _settings.SelectionColor;
+                tab.Invalidate();
+
+                // Set form settings
+                BackColor = _settings.BackColor;
+                menuStrip1.BackColor = _settings.MenuStripBackColor;
+                menuStrip1.ForeColor = _settings.MenuStripTextColor;
+                tsMain.BackColor = _settings.ToolStripBackColor;
+                tsMain.ForeColor = _settings.ToolStripTextColor;
+                Invalidate();
+
+                // Set document map settings
+                documentMap.map.BackColor = _settings.BackColor;
+                documentMap.map.ForeColor = _settings.ForeColor;
+            }
+        }
+
+        private bool IsFileAlreadyOpen(string fileName)
         {
             List<byte> usedNumbers = new List<byte>();
             for (byte i = 0; i < tablist.Count; i++)
@@ -308,7 +381,14 @@ namespace NotepadSharp
         {
             foreach (Editor tab in tablist.ToArray())
             {
-                tab.HighlightCurrentLine(_highlightCurrentLine);
+                if (_settings.HighlightCurrentLine)
+                {
+                    tab.mainEditor.CurrentLineColor = _settings.CurrentLineColor;
+                }
+                else
+                {
+                    tab.mainEditor.CurrentLineColor = Color.Transparent;
+                }
             }
             if (CurrentTB != null)
             {
@@ -321,9 +401,10 @@ namespace NotepadSharp
             if (font.Size <= 4)
                 return;
 
+            _settings.EditorFont = font;
             foreach (Editor tab in tablist)
             {
-                tab.mainEditor.Font = font;
+                tab.mainEditor.Font = _settings.EditorFont;
             }
         }
 
@@ -391,12 +472,12 @@ namespace NotepadSharp
             if (fontDialog == null)
             {
                 fontDialog = new FontDialog();
-                fontDialog.Font = EditorSettings.Font;
+                fontDialog.Font = _settings.EditorFont;
             }
             if (fontDialog.ShowDialog() == DialogResult.OK)
             {
                 ChangeFont(fontDialog.Font);
-                EditorSettings.Font = fontDialog.Font;
+                _settings.EditorFont = fontDialog.Font;
             }
         }
 
@@ -455,12 +536,12 @@ namespace NotepadSharp
 
         private void ZoomInToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(EditorSettings.Font.Name, EditorSettings.Font.Size + 2));
+            ChangeFont(new Font(_settings.EditorFont.Name, _settings.EditorFont.Size + 2));
         }
 
         private void ZoomOutToolStripButton_Click(object sender, EventArgs e)
         {
-            ChangeFont(new Font(EditorSettings.Font.Name, EditorSettings.Font.Size - 2));
+            ChangeFont(new Font(_settings.EditorFont.Name, _settings.EditorFont.Size - 2));
         }
 
         private void FindToolStripButton_Click(object sender, EventArgs e)
@@ -473,7 +554,7 @@ namespace NotepadSharp
 
         private void DocumentMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _enableDocumentMap = !_enableDocumentMap;
+            _settings.ShowDocumentMap = !_settings.ShowDocumentMap;
             UpdateDocumentMap();
         }
 
@@ -600,7 +681,7 @@ namespace NotepadSharp
 
         private void HlCurrentLineToolStripButton_Click(object sender, EventArgs e)
         {
-            _highlightCurrentLine = _highlightCurrentLine ? false : true;
+            _settings.HighlightCurrentLine = _settings.HighlightCurrentLine ? false : true;
 
             HighlightCurrentLine();
         }
@@ -722,6 +803,13 @@ namespace NotepadSharp
         {
             if (CurrentTB != null)
                 CurrentTB.mainEditor.SelectAll();
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (settingsForm == null || settingsForm.IsDisposed)
+                settingsForm = new SettingsForm(this);
+            settingsForm.Show();
         }
 
         #endregion
@@ -855,59 +943,9 @@ namespace NotepadSharp
             }
         }
 
-        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MainForm_FontChanged(object sender, EventArgs e)
         {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2005Theme);
-        }
-
-        private void legacyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012BlueTheme);
-        }
-
-        private void retroToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012DarkTheme);
-        }
-
-        private void vS2012LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2012LightTheme);
-        }
-
-        private void vS2013BLueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013BlueTheme);
-        }
-
-        private void vS2013DarkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013DarkTheme);
-        }
-
-        private void vS2013LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2013LightTheme);
-        }
-
-        private void vS2015BLueToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015BlueTheme);
-        }
-
-        private void vS2015DarkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015DarkTheme);
-        }
-
-        private void vS2015LightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2015LightTheme);
-        }
-
-        private void vS2003ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ChangeDockPanelTheme(DockPanelThemeType.VS2003Theme);
+            _settings.EditorFont = CurrentTB.Font;
         }
 
         #endregion
@@ -916,14 +954,14 @@ namespace NotepadSharp
 
         private void UpdateDocumentMap()
         {
-            if (documentMap == null && _enableDocumentMap)
+            if (documentMap == null && _settings.ShowDocumentMap)
                 BuildDocumentMap();
 
             if (CurrentTB != null && documentMap != null)
             {
-                documentMap.Target = tablist.Count > 0 ? CurrentTB.mainEditor : null;
-                documentMap.Visible = _enableDocumentMap;
-                if (!_enableDocumentMap || documentMap.Target == null)
+                documentMap.map.Target = tablist.Count > 0 ? CurrentTB.mainEditor : null;
+                documentMap.Visible = _settings.ShowDocumentMap;
+                if (!_settings.ShowDocumentMap || documentMap.map.Target == null)
                 {
                     documentMap.Close();
                     documentMap = null;
