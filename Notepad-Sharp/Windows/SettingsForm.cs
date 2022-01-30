@@ -24,6 +24,78 @@ namespace NotepadSharp.Windows
             curLineClrBox.BackColor = _parent.GlobalSettingsVar.CurrentLineColor;
             chgLineClrBox.BackColor = _parent.GlobalSettingsVar.ChangedLineColor;
             lineNbrClrBox.BackColor = _parent.GlobalSettingsVar.LineNumberColor;
+            caretClrBox.BackColor = _parent.GlobalSettingsVar.CaretColor;
+            slctClrBox.BackColor = _parent.GlobalSettingsVar.SelectionColor;
+        }
+
+        private void TxtClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.ForeColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void BckClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.BackColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void CurLineClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.CurrentLineColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void ChgLineClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.ChangedLineColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void LineNbrClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.LineNumberColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void CaretClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.CaretColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void SlctClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.SelectionColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
         }
     }
 }

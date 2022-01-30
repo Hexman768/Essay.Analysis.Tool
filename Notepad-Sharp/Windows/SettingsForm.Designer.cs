@@ -40,16 +40,26 @@
             this.curLineClrBox = new System.Windows.Forms.PictureBox();
             this.chgLineClrBox = new System.Windows.Forms.PictureBox();
             this.lineNbrClrBox = new System.Windows.Forms.PictureBox();
+            this.caretClrLbl = new System.Windows.Forms.Label();
+            this.caretClrBox = new System.Windows.Forms.PictureBox();
+            this.slctClrLbl = new System.Windows.Forms.Label();
+            this.slctClrBox = new System.Windows.Forms.PictureBox();
             this.groupBoxTheme.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtClrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bckClrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.curLineClrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chgLineClrBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lineNbrClrBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.caretClrBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slctClrBox)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxTheme
             // 
+            this.groupBoxTheme.Controls.Add(this.slctClrBox);
+            this.groupBoxTheme.Controls.Add(this.slctClrLbl);
+            this.groupBoxTheme.Controls.Add(this.caretClrBox);
+            this.groupBoxTheme.Controls.Add(this.caretClrLbl);
             this.groupBoxTheme.Controls.Add(this.lineNbrClrBox);
             this.groupBoxTheme.Controls.Add(this.chgLineClrBox);
             this.groupBoxTheme.Controls.Add(this.curLineClrBox);
@@ -62,7 +72,7 @@
             this.groupBoxTheme.Controls.Add(this.textColorLabel);
             this.groupBoxTheme.Location = new System.Drawing.Point(13, 13);
             this.groupBoxTheme.Name = "groupBoxTheme";
-            this.groupBoxTheme.Size = new System.Drawing.Size(200, 152);
+            this.groupBoxTheme.Size = new System.Drawing.Size(200, 235);
             this.groupBoxTheme.TabIndex = 0;
             this.groupBoxTheme.TabStop = false;
             this.groupBoxTheme.Text = "Theme";
@@ -78,11 +88,13 @@
             // 
             // txtClrBox
             // 
+            this.txtClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.txtClrBox.Location = new System.Drawing.Point(173, 12);
             this.txtClrBox.Name = "txtClrBox";
             this.txtClrBox.Size = new System.Drawing.Size(21, 21);
             this.txtClrBox.TabIndex = 1;
             this.txtClrBox.TabStop = false;
+            this.txtClrBox.Click += new System.EventHandler(this.TxtClrBox_Click);
             // 
             // backColorLabel
             // 
@@ -95,11 +107,13 @@
             // 
             // bckClrBox
             // 
+            this.bckClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.bckClrBox.Location = new System.Drawing.Point(173, 38);
             this.bckClrBox.Name = "bckClrBox";
             this.bckClrBox.Size = new System.Drawing.Size(21, 21);
             this.bckClrBox.TabIndex = 2;
             this.bckClrBox.TabStop = false;
+            this.bckClrBox.Click += new System.EventHandler(this.BckClrBox_Click);
             // 
             // currentLineColorLabel
             // 
@@ -130,27 +144,71 @@
             // 
             // curLineClrBox
             // 
+            this.curLineClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.curLineClrBox.Location = new System.Drawing.Point(173, 65);
             this.curLineClrBox.Name = "curLineClrBox";
             this.curLineClrBox.Size = new System.Drawing.Size(21, 21);
             this.curLineClrBox.TabIndex = 3;
             this.curLineClrBox.TabStop = false;
+            this.curLineClrBox.Click += new System.EventHandler(this.CurLineClrBox_Click);
             // 
             // chgLineClrBox
             // 
+            this.chgLineClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.chgLineClrBox.Location = new System.Drawing.Point(173, 92);
             this.chgLineClrBox.Name = "chgLineClrBox";
             this.chgLineClrBox.Size = new System.Drawing.Size(21, 21);
             this.chgLineClrBox.TabIndex = 6;
             this.chgLineClrBox.TabStop = false;
+            this.chgLineClrBox.Click += new System.EventHandler(this.ChgLineClrBox_Click);
             // 
             // lineNbrClrBox
             // 
+            this.lineNbrClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.lineNbrClrBox.Location = new System.Drawing.Point(173, 119);
             this.lineNbrClrBox.Name = "lineNbrClrBox";
             this.lineNbrClrBox.Size = new System.Drawing.Size(21, 21);
             this.lineNbrClrBox.TabIndex = 3;
             this.lineNbrClrBox.TabStop = false;
+            this.lineNbrClrBox.Click += new System.EventHandler(this.LineNbrClrBox_Click);
+            // 
+            // caretClrLbl
+            // 
+            this.caretClrLbl.AutoSize = true;
+            this.caretClrLbl.Location = new System.Drawing.Point(7, 154);
+            this.caretClrLbl.Name = "caretClrLbl";
+            this.caretClrLbl.Size = new System.Drawing.Size(59, 13);
+            this.caretClrLbl.TabIndex = 7;
+            this.caretClrLbl.Text = "Caret Color";
+            // 
+            // caretClrBox
+            // 
+            this.caretClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.caretClrBox.Location = new System.Drawing.Point(173, 146);
+            this.caretClrBox.Name = "caretClrBox";
+            this.caretClrBox.Size = new System.Drawing.Size(21, 21);
+            this.caretClrBox.TabIndex = 8;
+            this.caretClrBox.TabStop = false;
+            this.caretClrBox.Click += new System.EventHandler(this.CaretClrBox_Click);
+            // 
+            // slctClrLbl
+            // 
+            this.slctClrLbl.AutoSize = true;
+            this.slctClrLbl.Location = new System.Drawing.Point(7, 181);
+            this.slctClrLbl.Name = "slctClrLbl";
+            this.slctClrLbl.Size = new System.Drawing.Size(78, 13);
+            this.slctClrLbl.TabIndex = 9;
+            this.slctClrLbl.Text = "Selection Color";
+            // 
+            // slctClrBox
+            // 
+            this.slctClrBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.slctClrBox.Location = new System.Drawing.Point(173, 173);
+            this.slctClrBox.Name = "slctClrBox";
+            this.slctClrBox.Size = new System.Drawing.Size(21, 21);
+            this.slctClrBox.TabIndex = 10;
+            this.slctClrBox.TabStop = false;
+            this.slctClrBox.Click += new System.EventHandler(this.SlctClrBox_Click);
             // 
             // SettingsForm
             // 
@@ -167,6 +225,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.curLineClrBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chgLineClrBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lineNbrClrBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.caretClrBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.slctClrBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -185,5 +245,9 @@
         private System.Windows.Forms.PictureBox chgLineClrBox;
         private System.Windows.Forms.PictureBox curLineClrBox;
         private System.Windows.Forms.Label lineClrLbl;
+        private System.Windows.Forms.PictureBox slctClrBox;
+        private System.Windows.Forms.Label slctClrLbl;
+        private System.Windows.Forms.PictureBox caretClrBox;
+        private System.Windows.Forms.Label caretClrLbl;
     }
 }

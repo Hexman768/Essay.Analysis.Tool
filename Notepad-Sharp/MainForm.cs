@@ -25,7 +25,7 @@ namespace NotepadSharp
         internal FontDialog fontDialog;
         internal LoggerForm logger;
         internal DocMap documentMap;
-        internal SettingsForm settings;
+        internal SettingsForm settingsForm;
 
         //General variable declarations and definitions
         private readonly Range _selection;
@@ -112,7 +112,7 @@ namespace NotepadSharp
 
             // Set default settings
             _settings = new GlobalSettings();
-            settings = new SettingsForm(this);
+            settingsForm = new SettingsForm(this);
 
             CreateTab(null);
             UpdateDocumentMap();
@@ -158,11 +158,30 @@ namespace NotepadSharp
             tab.mainEditor.MouseClick += new MouseEventHandler(MainForm_MouseClick);
             tab.mainEditor.ForeColor = _settings.ForeColor;
             tab.mainEditor.BackColor = _settings.BackColor;
+            tab.mainEditor.CaretColor = _settings.CaretColor;
             tab.mainEditor.CaretBlinking = _settings.CaretBlinking;
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
             UpdateDocumentMap();
             HighlightCurrentLine();
+        }
+
+        /// <summary>
+        /// Updates the pre-existing tabs in the tablist
+        /// with the latest settings from <see cref="GlobalSettings"/>.
+        /// </summary>
+        public void UpdateActiveTabs()
+        {
+            foreach (Editor tab in tablist)
+            {
+                tab.mainEditor.BackColor = _settings.BackColor;
+                tab.mainEditor.ForeColor = _settings.ForeColor;
+                tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
+                tab.mainEditor.LineNumberColor = _settings.LineNumberColor;
+                tab.mainEditor.CaretColor = _settings.CaretColor;
+                tab.mainEditor.SelectionColor = _settings.SelectionColor;
+                tab.Invalidate();
+            }
         }
 
         private bool IsFileAlreadyOpen(string fileName)
@@ -619,6 +638,13 @@ namespace NotepadSharp
                 CurrentTB.mainEditor.SelectAll();
         }
 
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (settingsForm == null || settingsForm.IsDisposed)
+                settingsForm = new SettingsForm(this);
+            settingsForm.Show();
+        }
+
         #endregion
 
         #region Event Handlers
@@ -747,6 +773,11 @@ namespace NotepadSharp
             {
                 contextMenuStrip1.Show(this, new Point(e.X, e.Y));
             }
+        }
+
+        private void MainForm_FontChanged(object sender, EventArgs e)
+        {
+            _settings.EditorFont = CurrentTB.Font;
         }
 
         #endregion
@@ -943,15 +974,5 @@ namespace NotepadSharp
         }
 
         #endregion
-
-        private void MainForm_FontChanged(object sender, EventArgs e)
-        {
-            _settings.EditorFont = CurrentTB.Font;
-        }
-
-        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            settings.Show();
-        }
     }
 }

@@ -79,6 +79,11 @@ namespace NotepadSharp.Core
         public bool CaretBlinking { get; set; }
 
         /// <summary>
+        /// Gets and sets the color of selections in the editor.
+        /// </summary>
+        public Color SelectionColor { get; set; }
+
+        /// <summary>
         /// Restores settings to the default values.
         /// </summary>
         public void RestoreDefaults()
@@ -95,6 +100,7 @@ namespace NotepadSharp.Core
             ForeColor = Color.FromArgb(255, 0, 0, 0);
             BackColor = Color.White;
             CaretBlinking = true;
+            SelectionColor = Color.Blue;
         }
     }
 }
