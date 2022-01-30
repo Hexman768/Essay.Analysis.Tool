@@ -25,6 +25,7 @@ namespace NotepadSharp
         internal FontDialog fontDialog;
         internal LoggerForm logger;
         internal DocMap documentMap;
+        internal SettingsForm settings;
 
         //General variable declarations and definitions
         private readonly Range _selection;
@@ -50,6 +51,14 @@ namespace NotepadSharp
                     return activeMdi as Editor;
                 }
                 return null;
+            }
+        }
+
+        public GlobalSettings GlobalSettingsVar
+        {
+            get
+            {
+                return _settings;
             }
         }
 
@@ -103,7 +112,8 @@ namespace NotepadSharp
 
             // Set default settings
             _settings = new GlobalSettings();
-            
+            settings = new SettingsForm(this);
+
             CreateTab(null);
             UpdateDocumentMap();
 
@@ -937,6 +947,11 @@ namespace NotepadSharp
         private void MainForm_FontChanged(object sender, EventArgs e)
         {
             _settings.EditorFont = CurrentTB.Font;
+        }
+
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settings.Show();
         }
     }
 }

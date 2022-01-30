@@ -51,12 +51,12 @@ namespace NotepadSharp.Core
         /// <summary>
         /// Gets and sets the color of the line numbers in the editor.
         /// </summary>
-        public Color LineNumberColor { get; set; } // default is color.teal
+        public Color LineNumberColor { get; set; }
 
         /// <summary>
         /// Gets and sets the color of the caret in the editor.
         /// </summary>
-        public Color CaretColor { get; set; } // default is black
+        public Color CaretColor { get; set; }
 
         /// <summary>
         /// Enables or disables the caret being wide or slim.
