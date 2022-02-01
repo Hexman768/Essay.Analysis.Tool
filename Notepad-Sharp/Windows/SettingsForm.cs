@@ -97,5 +97,45 @@ namespace NotepadSharp.Windows
                 _parent.UpdateActiveTabs();
             }
         }
+
+        private void MsBackClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.MenuStripBackColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void MsTxtClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.MenuStripTextColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void TsBackClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.ToolStripBackColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
+
+        private void TsTxtClrBox_Click(object sender, System.EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                _parent.GlobalSettingsVar.ToolStripTextColor = colorDialog.Color;
+                UpdateUI();
+                _parent.UpdateActiveTabs();
+            }
+        }
     }
 }

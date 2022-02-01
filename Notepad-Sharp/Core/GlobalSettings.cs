@@ -84,6 +84,26 @@ namespace NotepadSharp.Core
         public Color SelectionColor { get; set; }
 
         /// <summary>
+        /// Gets and sets the back color attribute of the Menu Strip.
+        /// </summary>
+        public Color MenuStripBackColor { get; set; }
+
+        /// <summary>
+        /// Gets and sets the text color attribute of the Menu Strip.
+        /// </summary>
+        public Color MenuStripTextColor { get; set; }
+
+        /// <summary>
+        /// Gets and sets the text color attribute of the Tool Strip.
+        /// </summary>
+        public Color ToolStripTextColor { get; set; }
+
+        /// <summary>
+        /// Gets and sets the back color attribute of the Tool Strip.
+        /// </summary>
+        public Color ToolStripBackColor { get; set; }
+
+        /// <summary>
         /// Restores settings to the default values.
         /// </summary>
         public void RestoreDefaults()

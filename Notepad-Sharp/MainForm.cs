@@ -185,6 +185,14 @@ namespace NotepadSharp
                 tab.mainEditor.SelectionColor = _settings.SelectionColor;
                 tab.Invalidate();
 
+                // Set form settings
+                BackColor = _settings.BackColor;
+                menuStrip1.BackColor = _settings.MenuStripBackColor;
+                menuStrip1.ForeColor = _settings.MenuStripTextColor;
+                tsMain.BackColor = _settings.ToolStripBackColor;
+                tsMain.ForeColor = _settings.ToolStripTextColor;
+                Invalidate();
+
                 // Set document map settings
                 documentMap.map.BackColor = _settings.BackColor;
                 documentMap.map.ForeColor = _settings.ForeColor;
