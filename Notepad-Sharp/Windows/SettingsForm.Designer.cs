@@ -72,10 +72,10 @@
             this.groupBoxTheme.Controls.Add(this.textColorLabel);
             this.groupBoxTheme.Location = new System.Drawing.Point(13, 13);
             this.groupBoxTheme.Name = "groupBoxTheme";
-            this.groupBoxTheme.Size = new System.Drawing.Size(200, 235);
+            this.groupBoxTheme.Size = new System.Drawing.Size(200, 204);
             this.groupBoxTheme.TabIndex = 0;
             this.groupBoxTheme.TabStop = false;
-            this.groupBoxTheme.Text = "Theme";
+            this.groupBoxTheme.Text = "UI Theme Settings";
             // 
             // textColorLabel
             // 

@@ -160,6 +160,7 @@ namespace NotepadSharp
             tab.mainEditor.BackColor = _settings.BackColor;
             tab.mainEditor.CaretColor = _settings.CaretColor;
             tab.mainEditor.CaretBlinking = _settings.CaretBlinking;
+            tab.mainEditor.SelectionColor = _settings.SelectionColor;
             tab.Show(this.dockpanel, DockState.Document);
             tablist.Add(tab);
             UpdateDocumentMap();
@@ -174,13 +175,19 @@ namespace NotepadSharp
         {
             foreach (Editor tab in tablist)
             {
+                // Set editor settings
                 tab.mainEditor.BackColor = _settings.BackColor;
                 tab.mainEditor.ForeColor = _settings.ForeColor;
                 tab.mainEditor.ChangedLineColor = _settings.ChangedLineColor;
+                tab.mainEditor.CurrentLineColor = _settings.CurrentLineColor;
                 tab.mainEditor.LineNumberColor = _settings.LineNumberColor;
                 tab.mainEditor.CaretColor = _settings.CaretColor;
                 tab.mainEditor.SelectionColor = _settings.SelectionColor;
                 tab.Invalidate();
+
+                // Set document map settings
+                documentMap.map.BackColor = _settings.BackColor;
+                documentMap.map.ForeColor = _settings.ForeColor;
             }
         }
 
@@ -791,9 +798,9 @@ namespace NotepadSharp
 
             if (CurrentTB != null && documentMap != null)
             {
-                documentMap.Target = tablist.Count > 0 ? CurrentTB.mainEditor : null;
+                documentMap.map.Target = tablist.Count > 0 ? CurrentTB.mainEditor : null;
                 documentMap.Visible = _settings.ShowDocumentMap;
-                if (!_settings.ShowDocumentMap || documentMap.Target == null)
+                if (!_settings.ShowDocumentMap || documentMap.map.Target == null)
                 {
                     documentMap.Close();
                     documentMap = null;
