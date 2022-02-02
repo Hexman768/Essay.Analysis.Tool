@@ -121,6 +121,10 @@ namespace NotepadSharp.Core
             BackColor = Color.White;
             CaretBlinking = true;
             SelectionColor = Color.Blue;
+            MenuStripBackColor = SystemColors.Control;
+            MenuStripTextColor = Color.Black;
+            ToolStripTextColor = Color.Black;
+            ToolStripBackColor = SystemColors.Control;
         }
     }
 }

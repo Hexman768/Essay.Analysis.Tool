@@ -9,14 +9,14 @@ namespace NotepadSharp.Windows
     public partial class Editor : DockContent
     {
         //file extensions
-        private const string _html = "html";
-        private const string _xml = "xml";
-        private const string _javascript = "js";
-        private const string _csharp = "cs";
-        private const string _lua = "lua";
-        private const string _sql = "sql";
-        private const string _vb = "vb";
-        private const string _vbs = "vbs";
+        private const string _html = ".html";
+        private const string _xml = ".xml";
+        private const string _javascript = ".js";
+        private const string _csharp = ".cs";
+        private const string _lua = ".lua";
+        private const string _sql = ".sql";
+        private const string _vb = ".vb";
+        private const string _vbs = ".vbs";
 
         private MainForm _parent;
 
@@ -76,25 +76,8 @@ namespace NotepadSharp.Windows
                 DetectSyntax("");
                 return;
             }
-            char[] name = fName.ToCharArray();
-            string ext = "";
-            int token = fName.Length - 1;
 
-            while (name[token] != '.')
-            {
-                ext += name[token].ToString();
-                token -= 1;
-            }
-
-            name = ext.ToCharArray();
-            Array.Reverse(name);
-            token = 0;
-            ext = "";
-            while (token < name.Length)
-            {
-                ext += name[token].ToString();
-                token += 1;
-            }
+            string ext = Path.GetExtension(fName);
             DetectSyntax(ext);
         }
 
