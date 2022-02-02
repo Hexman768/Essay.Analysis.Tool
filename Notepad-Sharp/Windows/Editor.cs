@@ -71,14 +71,7 @@ namespace NotepadSharp.Windows
 
         public void SetCurrentEditorSyntaxHighlight(string fName)
         {
-            if (!fName.Contains("."))
-            {
-                DetectSyntax("");
-                return;
-            }
-
-            string ext = Path.GetExtension(fName);
-            DetectSyntax(ext);
+            DetectSyntax(Path.GetExtension(fName));
         }
 
         /// <summary>
